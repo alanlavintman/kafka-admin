@@ -8,7 +8,9 @@ GET     /                           controllers.Application.index
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
-
 # Rest API urls
-#GET    /api/1.0/topics/list         controllers.TopicsController.api_list
-GET    /api/1.0/brokers/list         controllers.BrokersController.api_list
+GET    /api/1.0/topics/view_with_details         controllers.TopicsController.api_view_with_details
+GET    /api/1.0/topics/view         controllers.TopicsController.api_view
+GET    /api/1.0/topics/view/:topicName         controllers.TopicsController.api_view_detail(topicName)
+
+GET    /api/1.0/brokers/list        controllers.BrokersController.api_list
