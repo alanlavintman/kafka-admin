@@ -34,7 +34,7 @@ object TopicsController extends Controller {
    
    def web_topic_list = Action { implicit request => 
      val topics = TopicService.getTopics
-     Ok(views.html.brokers.information(topics.getTopics))
+     Ok(views.html.topics.list(topics.getTopics))
    }
   
 

@@ -1,0 +1,27 @@
+@(topicList: scala.collection.mutable.ListBuffer[String])
+
+@main(title = ".:: Kafka Admin - Home ::.") {
+<!-- Tables
+================================================== -->
+<section id="tables">
+  <div class="page-header">
+    <h1>Registered Topics</h1>
+  </div>
+  <table class="table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th></th>      
+      </tr>
+    </thead>
+    <tbody>
+		 @for(topic <- topicList) {
+      <tr>
+        <td>@topic</td>
+        <td></td>
+      </tr>
+	} 	
+    </tbody>
+  </table>
+</section>
+}
