@@ -33,4 +33,13 @@ object BrokerService {
     brokers
   }
   
+  
+  def getBrokerById(id: String) = {
+    val zkClient = Zookeeper.getInstance()
+    val brokerInformation = ZkUtils.readData(zkClient, brokerTopicsZPath + "/" + id)
+    val brokenBrokerInformation = brokerInformation.split(":")
+    val broker: Broker = Broker(id, brokenBrokerInformation(1),brokenBrokerInformation(2))
+    broker
+  }
+  
 }

@@ -1,0 +1,69 @@
+@(brokersInfo: scala.collection.mutable.ListBuffer[models.topics.BrokerTopicItem], topicName: String)
+
+@main(title = ".:: Kafka Admin - Home ::.") {
+<!-- Tables
+================================================== -->
+
+<script language="javascript">
+function bringBrokerInformation(brokerId){
+	var url = '/api/1.0/brokers/'+brokerId;
+	$.get(url, function(data) {
+		$("#broker-id").text(data.id);
+		$("#broker-ip").text(data.ip);
+		$("#broker-port").text(data.port);
+		$('#BrokerInfoModal').modal({
+	    	keyboard: true
+	    });
+	});
+}
+</script>
+
+    <!-- Modal -->
+    <div id="BrokerInfoModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-header">
+    		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    		<h3 id="myModalLabel">Broker Information</h3>
+    	</div>
+	    <div class="modal-body">
+	    	<table>
+	    		<tr>
+	    			<td>Id:</td>
+	    			<td id="broker-id"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>Ip:</td>
+	    			<td id="broker-ip"></td>
+	    		</tr>
+	    		<tr>
+	    			<td>Port:</td>
+	    			<td id="broker-port"></td>
+	    		</tr>
+	    	</table>
+	    </div>
+	    <div class="modal-footer">
+	    	<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	    </div>
+    </div>
+ 
+<section id="tables">
+  <div class="page-header">
+    <h1>Registered brokers for topic: @topicName</h1>
+  </div>
+  <table class="table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Broker Name</th>
+        <th>Num Of partitions</th>      
+      </tr>
+    </thead>
+    <tbody>
+		 @for(brokerInfo <- brokersInfo) {
+      <tr>
+        <td><a href="javascript:bringBrokerInformation('@brokerInfo.brokerId');">@brokerInfo.brokerId</a></td>
+        <td>@brokerInfo.numOfPartitions</td>
+      </tr>
+	  } 	
+    </tbody>
+  </table>
+</section>
+}

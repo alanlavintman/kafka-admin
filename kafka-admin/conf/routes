@@ -8,6 +8,7 @@ GET     /web/                       controllers.Application.webIndex
 GET     /web/documentation          controllers.Application.documentation
 GET     /web/brokers-information    controllers.BrokersController.web_list
 GET     /web/brokers-topic    		controllers.TopicsController.web_topic_list
+GET     /web/brokers-topic/:topicName    		controllers.TopicsController.web_topic_detail(topicName)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
@@ -17,6 +18,7 @@ GET    /api/1.0/topics/view_with_details         			controllers.TopicsController
 GET    /api/1.0/topics/         							controllers.TopicsController.api_view
 GET    /api/1.0/topics/view/:topicName         				controllers.TopicsController.api_view_detail(topicName)
 GET    /api/1.0/brokers/        							controllers.BrokersController.api_list
+GET    /api/1.0/brokers/:id        							controllers.BrokersController.api_view(id)
 
 GET    /api/1.0/consumers/         							controllers.ConsumerController.api_list
 GET    /api/1.0/consumers/:consumerGroup   					controllers.ConsumerController.api_view(consumerGroup)

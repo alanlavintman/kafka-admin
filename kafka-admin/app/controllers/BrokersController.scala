@@ -18,6 +18,16 @@ object BrokersController extends Controller {
 	 }
   }
    
+   def api_view(id: String) = Action { implicit request =>     
+     val brokers = BrokerService.getBrokerById(id)
+     val brokersJson = generate(brokers)
+     request match {
+	  case Accepts.Json() => Ok(brokersJson).as("application/json")
+	  case _ => BadRequest
+	 }
+  }
+   
+   
    def web_list = Action { implicit request => 
      val brokerList = BrokerService.getBrokers
      Ok(views.html.brokers.information(brokerList.getBrokers))

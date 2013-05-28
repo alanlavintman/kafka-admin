@@ -36,6 +36,10 @@ object TopicsController extends Controller {
      val topics = TopicService.getTopics
      Ok(views.html.topics.list(topics.getTopics))
    }
-  
+   
+   def web_topic_detail(topicName : String) = Action { implicit request => 
+     val topicDetails = TopicService.getTopicDetails(topicName)
+     Ok(views.html.topics.info(topicDetails.getTopicInfo, topicName))
+   }
 
 }
