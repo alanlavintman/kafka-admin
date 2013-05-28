@@ -4,13 +4,23 @@
 
 # Home page
 GET     /                           controllers.Application.index
+GET     /web/                       controllers.Application.webIndex
+GET     /web/documentation          controllers.Application.documentation
+GET     /web/brokers-information    controllers.BrokersController.web_list
+GET     /web/brokers-topic    		controllers.TopicsController.web_topic_list
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 # Rest API urls
-GET    /api/1.0/topics/view_with_details         controllers.TopicsController.api_view_with_details
-GET    /api/1.0/topics/view         controllers.TopicsController.api_view
-GET    /api/1.0/topics/view/:topicName         controllers.TopicsController.api_view_detail(topicName)
+GET    /api/1.0/topics/view_with_details         			controllers.TopicsController.api_view_with_details
+GET    /api/1.0/topics/         							controllers.TopicsController.api_view
+GET    /api/1.0/topics/view/:topicName         				controllers.TopicsController.api_view_detail(topicName)
+GET    /api/1.0/brokers/        							controllers.BrokersController.api_list
 
-GET    /api/1.0/brokers/list        controllers.BrokersController.api_list
+GET    /api/1.0/consumers/         							controllers.ConsumerController.api_list
+GET    /api/1.0/consumers/:consumerGroup   					controllers.ConsumerController.api_view(consumerGroup)
+GET    /api/1.0/consumers/:consumerGroup/:topicName         controllers.ConsumerController.api_view_topic_offset(consumerGroup, topicName)
+
+# UI urls
+#GET    /web/1.0/topics/view_with_details         controllers.TopicsController.api_view_with_details

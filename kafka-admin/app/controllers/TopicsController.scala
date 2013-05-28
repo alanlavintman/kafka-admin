@@ -11,7 +11,7 @@ object TopicsController extends Controller {
    def api_view = Action { implicit request =>     
      val topics = TopicService.getTopics
      request match {
-      case Accepts.Json() => Ok(generate(topics))
+      case Accepts.Json() => Ok(generate(topics)).as("application/json")
 	  case _ => BadRequest
 	 }
   }
@@ -19,7 +19,7 @@ object TopicsController extends Controller {
    def api_view_with_details = Action { implicit request =>     
      val topics = TopicService.getTopicsWithDetails
      request match {
-      case Accepts.Json() => Ok(generate(topics))
+      case Accepts.Json() => Ok(generate(topics)).as("application/json")
 	  case _ => BadRequest
 	 }
   }
@@ -27,10 +27,15 @@ object TopicsController extends Controller {
    def api_view_detail(topicName: String) = Action { implicit request =>     
      val topicDetails = TopicService.getTopicDetails(topicName)
      request match {
-      case Accepts.Json() => Ok(generate(topicDetails))
+      case Accepts.Json() => Ok(generate(topicDetails)).as("application/json")
 	  case _ => BadRequest
 	 }
   }
+   
+   def web_topic_list = Action { implicit request => 
+     val topics = TopicService.getTopics
+     Ok(views.html.brokers.information(topics.getTopics))
+   }
   
 
 }

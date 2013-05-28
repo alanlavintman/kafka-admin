@@ -3,10 +3,10 @@ package services
 import utils.Zookeeper
 import kafka.utils.ZkUtils
 import scala.collection._
-import models.Topics
-import models.DetailedTopics
-import models.Topic
-import models.BrokerTopicItem
+import models.topics.Topics
+import models.topics.Topic
+import models.topics.DetailedTopics
+import models.topics.BrokerTopicItem
 
 object TopicService {
   

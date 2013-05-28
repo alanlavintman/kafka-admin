@@ -6,7 +6,15 @@ import play.api.mvc._
 object Application extends Controller {
   
   def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+      Redirect("/web/")
+  }
+  
+  def webIndex = Action {
+      Ok(views.html.index())
+  }
+  
+  def documentation = Action {
+    Ok(views.html.documentation())
   }
   
 }
