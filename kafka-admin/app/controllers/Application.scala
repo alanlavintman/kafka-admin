@@ -12,9 +12,6 @@ object Application extends Controller {
   def webIndex = Action {
       Ok(views.html.index())
   }
-  
-  def documentation = Action {
-    Ok(views.html.documentation())
-  }
+
   
 }

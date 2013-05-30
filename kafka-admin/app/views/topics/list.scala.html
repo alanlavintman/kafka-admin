@@ -1,15 +1,15 @@
 @(topicList: scala.collection.mutable.ListBuffer[String])
 
-@main(title = ".:: Kafka Admin - Home ::.") {
+@main(title = ".:: Kafka Admin - Topics ::.", menuItem="topics") {
 <!-- Tables
 ================================================== -->
 <section id="tables">
   <div class="page-header">
     <h1>Registered Topics</h1>
   </div>
-  <table class="table table-bordered table-striped table-hover">
+  <table class="table table-bordered table-striped table-hover table-layout: fixed;">
     <thead>
-      <tr>
+      <tr class="text-center">
         <th>Name</th>
         <th></th>      
       </tr>
@@ -17,8 +17,8 @@
     <tbody>
 		 @for(topic <- topicList) {
       <tr>
-        <td>@topic</td>
-        <td><a class="btn btn-info" href="/web/brokers-topic/@topic"><i class="icon-white"></i>Brokers</a></td>
+        <td style="overflow:hidden;">@topic</td>
+        <td style="overflow:hidden;width: 5%"><a class="btn btn-info" href="/web/topics/@topic">Brokers</a></td>
       </tr>
 	} 	
     </tbody>

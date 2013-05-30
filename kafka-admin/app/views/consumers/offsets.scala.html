@@ -1,0 +1,104 @@
+@(consumerTopicOffsets: scala.collection.mutable.ListBuffer[models.consumer.ConsumerTopicOffset], consumerGroup: String, topic: String)
+@import views.html.brokers.brokermodal
+
+@main(title = ".:: Kafka Admin - Consumers ::.", menuItem="consumers") {
+
+@brokermodal()
+
+<script language="javascript">
+var loaderImage =  $('<img src="/assets/images/loader.gif">');
+$(document).ready(function() {	
+	reloadAttributes();
+});
+
+function reloadAttributes(){
+	$('.real-broker').each(function (){
+		var that = $(this); 
+		var brokerAndPartition = that.attr('id').split('-');
+		var url = '/api/1.0/offsets/@consumerGroup/@topic/' + brokerAndPartition[1] + '/' + brokerAndPartition[2];
+		$.get(url, function(data) {
+			 that.html(data.realOffset);
+		});
+	});
+	setTimeout(reloadAttributes,5000);
+}
+
+function resetBrokerOffset(brokerId, partition){
+
+	var consumerGroup = '@consumerGroup';
+	var topic = '@topic';
+	
+	var url = '/api/1.0/offsets/' + consumerGroup + '/' + topic + '/' + brokerId + '/' + partition;
+	var loaderImage = $('#loader-' + brokerId + '-' + partition);
+	var button = $('#reset-' + brokerId + '-' + partition);
+	button.hide();
+	loaderImage.show();
+	
+	$.ajax({
+    	type: "PUT",
+    	url: url,
+    	contentType: "application/json",
+    	data: '{ }',
+    	error: function (data){
+    		alert('error' + data);
+    	},
+    	success: function (data) {
+    		var zkLabel = $('#zk-' + data.brokerId + '-' + data.partition);
+    		var brokerLabel = $('#broker-' + data.brokerId + '-' + data.partition);
+	    	zkLabel.html(data.zkOffset);
+	    	brokerLabel.html(data.brokerOffset);
+        }, 
+        complete: function (data){
+        	button.show();
+			loaderImage.hide();
+        }
+	});				
+}
+</script>
+
+ <!-- Modal -->
+    <div id="resetConfirmDialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    	<div class="modal-header">
+    		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    		<h3 id="myModalLabel">Reset confirmation</h3>
+    	</div>
+	    <div class="modal-body">
+	    	<p id="resetConfirmText"></p>
+	    </div>
+	    <div class="modal-footer">
+	    	<button class="btn" data-dismiss="modal" aria-hidden="true">Ok</button>
+	    	<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	    </div>
+    </div>
+ 
+<section id="tables">
+  <div class="page-header">
+    <h1>Registered topics for consumer: @consumerGroup</h1>
+  </div>
+  <table id="offsetsDataGrid" class="table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Broker</th>
+        <th>Partitions</th>
+        <th>ZK Offset</th>
+        <th>Broker offset</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+	@for(consumerTopicOffset <- consumerTopicOffsets) {
+      <tr>
+        <td><a href="javascript:showBrokerInfo('@consumerTopicOffset.brokerId');">@consumerTopicOffset.brokerId</a></td>
+        <td style="overflow:hidden;width: 10%">@consumerTopicOffset.partition</td>
+        <td style="overflow:hidden;width: 10%" id="zk-@consumerTopicOffset.brokerId-@consumerTopicOffset.partition">@consumerTopicOffset.offset</td>
+        <td style="overflow:hidden;width: 10%" class="real-broker" id="broker-@consumerTopicOffset.brokerId-@consumerTopicOffset.partition"><img src="/assets/images/loader.gif"/></td>
+		<td style="overflow:hidden;width: 5%">
+			<a class="btn btn-info" id="reset-@consumerTopicOffset.brokerId-@consumerTopicOffset.partition" href="javascript: resetBrokerOffset('@consumerTopicOffset.brokerId','@consumerTopicOffset.partition')">Reset</a>
+			<img id="loader-@consumerTopicOffset.brokerId-@consumerTopicOffset.partition" src="/assets/images/loader.gif" style="display: none;"/>
+		</td>
+      </tr>
+	 } 	
+    </tbody>
+  </table>
+</section>
+}

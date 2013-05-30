@@ -1,0 +1,13 @@
+@(menuItem: String)
+
+  <div class="row" style="margin:0,0,0,0;padding:0,0,0,0;">
+	 <div class="subnav">
+	    <ul class="nav nav-pills">
+	      <li @if(menuItem=="rest") { class="active" }><a href="/web/documentation/rest">Rest API</a></li>
+	      <li @if(menuItem=="web") { class="active" }><a href="/web/documentation/web">Web UI</a></li>
+	      <li @if(menuItem=="practices") { class="active" }><a href="/web/documentation/practices">Best Practices</a></li>
+	      <li><a href="#forms">General</a></li>
+	      <li><a href="#tables">Faq</a></li>
+	    </ul>
+	 </div>
+  </div> 

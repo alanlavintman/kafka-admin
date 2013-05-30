@@ -3,12 +3,18 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
-GET     /web/                       controllers.Application.webIndex
-GET     /web/documentation          controllers.Application.documentation
-GET     /web/brokers-information    controllers.BrokersController.web_list
-GET     /web/brokers-topic    		controllers.TopicsController.web_topic_list
-GET     /web/brokers-topic/:topicName    		controllers.TopicsController.web_topic_detail(topicName)
+GET     /                           				controllers.Application.index
+GET     /web/                       				controllers.Application.webIndex
+GET     /web/brokers    							controllers.BrokersController.web_list
+GET     /web/topics    								controllers.TopicsController.web_topic_list
+GET     /web/topics/:topicName    					controllers.TopicsController.web_topic_detail(topicName)
+GET     /web/consumers    				    		controllers.ConsumerController.web_consumer_list
+GET     /web/consumers/:consumerGroup 	    		controllers.ConsumerController.web_consumer_view(consumerGroup)
+GET     /web/consumers/:consumerGroup/:topicName  	controllers.ConsumerController.web_consumer_offsets(consumerGroup, topicName)
+
+GET     /web/documentation/rest  					controllers.DocumentationController.web_rest_api
+GET     /web/documentation/web  					controllers.DocumentationController.web_web_admin
+GET     /web/documentation/practices  				controllers.DocumentationController.web_best_practices
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
@@ -20,9 +26,13 @@ GET    /api/1.0/topics/view/:topicName         				controllers.TopicsController.
 GET    /api/1.0/brokers/        							controllers.BrokersController.api_list
 GET    /api/1.0/brokers/:id        							controllers.BrokersController.api_view(id)
 
-GET    /api/1.0/consumers/         							controllers.ConsumerController.api_list
-GET    /api/1.0/consumers/:consumerGroup   					controllers.ConsumerController.api_view(consumerGroup)
-GET    /api/1.0/consumers/:consumerGroup/:topicName         controllers.ConsumerController.api_view_topic_offset(consumerGroup, topicName)
+GET    /api/1.0/consumers/         													controllers.ConsumerController.api_list
+GET    /api/1.0/consumers/:consumerGroup   											controllers.ConsumerController.api_view(consumerGroup)
+GET    /api/1.0/consumers/:consumerGroup/:topicName         						controllers.ConsumerController.api_view_topic_offset(consumerGroup, topicName)
+GET    /api/1.0/offsets/:consumerGroup/:topicName/:broker/:partition  				controllers.ConsumerController.api_get_broker_offset(consumerGroup, topicName, broker, partition)
+
+#Rest API urls for updating the offsets.
+PUT    /api/1.0/offsets/:consumerGroup/:topicName/:broker/:partition  				controllers.ConsumerController.api_put_broker_offsets(consumerGroup, topicName, broker, partition)
 
 # UI urls
 #GET    /web/1.0/topics/view_with_details         controllers.TopicsController.api_view_with_details

@@ -1,6 +1,7 @@
 @(brokerList: scala.collection.mutable.ListBuffer[models.brokers.Broker])
 
-@main(title = ".:: Kafka Admin - Home ::.") {
+@main(title = ".:: Kafka Admin - Brokers ::.", menuItem="brokers"){
+ 
 <!-- Tables
 ================================================== -->
 <section id="tables">
@@ -9,20 +10,18 @@
   </div>
   <table class="table table-bordered table-striped table-hover">
     <thead>
-      <tr>
-        <th>Id</th>
-        <th>Ip</th>
-        <th>Port</th>
-        <th></th>      
+      <tr class="text-center">
+        <th >Id</th>
+        <th >Ip</th>
+        <th >Port</th>     
       </tr>
     </thead>
     <tbody>
 		 @for(broker <- brokerList) {
-      <tr>
+      <tr >
         <td>@broker.id</td>
         <td>@broker.ip</td>
         <td>@broker.port</td>
-        <td></td>
       </tr>
 	} 	
     </tbody>
