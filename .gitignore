@@ -9,3 +9,4 @@ target/
 build/
 .target/
 *.swp
+bin/
