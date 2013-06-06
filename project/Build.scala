@@ -19,8 +19,7 @@ object ApplicationBuild extends Build {
       resolvers += Resolver.url("conduit", url("http://192.168.18.95:8081/artifactory/conduit/"))(Resolver.ivyStylePatterns),
       resolvers += Resolver.url("repo.codahale.com", url("http://repo.codahale.com"))(Resolver.ivyStylePatterns)
     ).settings(
-      Play2WarKeys.servletVersion := "3.0",
-      Play2WarKeys.targetName:= Some("kafka-admin.war")
+      Play2WarKeys.servletVersion := "3.0"
    ).settings(Play2WarPlugin.play2WarSettings: _*)
 
 }
