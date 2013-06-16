@@ -1,10 +1,7 @@
 @(consumerTopicOffsets: scala.collection.mutable.ListBuffer[models.consumer.ConsumerTopicOffset], consumerGroup: String, topic: String)
 @import views.html.brokers.brokermodal
-
 @main(title = ".:: Kafka Admin - Consumers ::.", menuItem="consumers") {
-
 @brokermodal()
-
 <script language="javascript">
 var loaderImage =  $('<img src="/assets/images/loader.gif">');
 $(document).ready(function() {	
@@ -23,17 +20,43 @@ function reloadAttributes(){
 	setTimeout(reloadAttributes,5000);
 }
 
+function resetBrokerOffsets(){
+    var boxes = $('input[name=chk_offsets]:checked');
+    reset(boxes);
+}
+
+function resetAllBrokerOffsets(){
+    var boxes = $('input[name=chk_offsets]');
+    reset(boxes);
+}
+
+function reset(boxes){
+    if (boxes.size() > 0){
+        $(boxes).each(function(){
+            var brokerInfo = this.value.split('-');
+            resetBrokerOffset(brokerInfo[0], brokerInfo[1]);
+        });
+    }
+}
+
 function resetBrokerOffset(brokerId, partition){
 
 	var consumerGroup = '@consumerGroup';
 	var topic = '@topic';
 	
 	var url = '/api/1.0/offsets/' + consumerGroup + '/' + topic + '/' + brokerId + '/' + partition;
+
+    /*
 	var loaderImage = $('#loader-' + brokerId + '-' + partition);
 	var button = $('#reset-' + brokerId + '-' + partition);
 	button.hide();
 	loaderImage.show();
-	
+    */
+
+    var zkLabel = $('#zk-' + brokerId + '-' + partition);
+    var imgLoader = loaderImage.clone();
+    zkLabel.html(imgLoader);
+
 	$.ajax({
     	type: "PUT",
     	url: url,
@@ -49,8 +72,10 @@ function resetBrokerOffset(brokerId, partition){
 	    	brokerLabel.html(data.brokerOffset);
         }, 
         complete: function (data){
-        	button.show();
+        	/*button.show();
 			loaderImage.hide();
+    */
+            imgLoader.remove();
         }
 	});				
 }
@@ -75,30 +100,43 @@ function resetBrokerOffset(brokerId, partition){
   <div class="page-header">
     <h1>Registered topics for consumer: @consumerGroup</h1>
   </div>
-  <table id="offsetsDataGrid" class="table table-bordered table-striped table-hover">
-    <thead>
-      <tr>
-        <th>Broker</th>
-        <th>Partitions</th>
-        <th>ZK Offset</th>
-        <th>Broker offset</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-	@for(consumerTopicOffset <- consumerTopicOffsets) {
-      <tr>
-        <td><a href="javascript:showBrokerInfo('@consumerTopicOffset.brokerId');">@consumerTopicOffset.brokerId</a></td>
-        <td style="overflow:hidden;width: 10%">@consumerTopicOffset.partition</td>
-        <td style="overflow:hidden;width: 10%" id="zk-@consumerTopicOffset.brokerId-@consumerTopicOffset.partition">@consumerTopicOffset.offset</td>
-        <td style="overflow:hidden;width: 10%" class="real-broker" id="broker-@consumerTopicOffset.brokerId-@consumerTopicOffset.partition"><img src="/assets/images/loader.gif"/></td>
-		<td style="overflow:hidden;width: 5%">
-			<a class="btn btn-info" id="reset-@consumerTopicOffset.brokerId-@consumerTopicOffset.partition" href="javascript: resetBrokerOffset('@consumerTopicOffset.brokerId','@consumerTopicOffset.partition')">Reset</a>
-			<img id="loader-@consumerTopicOffset.brokerId-@consumerTopicOffset.partition" src="/assets/images/loader.gif" style="display: none;"/>
-		</td>
-      </tr>
-	 } 	
-    </tbody>
-  </table>
+
+    <form id="topics-frm" method="post" action="">
+
+     <table id="offsetsDataGrid" class="table table-bordered table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Broker</th>
+            <th>Partitions</th>
+            <th>ZK Offset</th>
+            <th>Broker offset</th>
+            <th>
+                <div class="btn-group">
+                    <a class="btn btn-primary" href="#">Reset</a>
+                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript: resetBrokerOffsets();">Selected</a></li>
+                        <li><a href="javascript: resetAllBrokerOffsets();">All</a></li>
+                    </ul>
+                </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        @for(consumerTopicOffset <- consumerTopicOffsets) {
+          <tr>
+            <td><a href="javascript:showBrokerInfo('@consumerTopicOffset.brokerId');">@consumerTopicOffset.brokerId</a></td>
+            <td style="overflow:hidden;width: 10% ; text-align: right;">@consumerTopicOffset.partition</td>
+            <td style="overflow:hidden;width: 10% ; text-align: right;" id="zk-@consumerTopicOffset.brokerId-@consumerTopicOffset.partition">@consumerTopicOffset.offset</td>
+            <td style="overflow:hidden;width: 10% ; text-align: right;" class="real-broker" id="broker-@consumerTopicOffset.brokerId-@consumerTopicOffset.partition"><img src="/assets/images/loader.gif"/></td>
+            <td style="overflow:hidden;width: 5%; text-align: center; ">
+                <input type="checkbox" name="chk_offsets" id="chk_offsets" value="@consumerTopicOffset.brokerId-@consumerTopicOffset.partition" />
+            </td>
+          </tr>
+         }
+        </tbody>
+      </table>
+
+  </form>
 </section>
 }
