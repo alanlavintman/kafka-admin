@@ -6,7 +6,7 @@ import com.github.play2war.plugin._
 object ApplicationBuild extends Build {
 
     val appName         = "kafka-admin"
-    val appVersion      = "1.0-SNAPSHOT"
+    val appVersion      = "1.0"
 
     val appDependencies = Seq(
     	//"kafka" % "kafka" % "0.7.1",
