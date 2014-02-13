@@ -31,3 +31,8 @@ Because we love kafka, we introduced the best practices section that will provid
 to set up your cluster with the best possible configuration. 
 
 
+=======
+kafka-admin
+===========
+
+Web Admin for kafka 0.7.2
