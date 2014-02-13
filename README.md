@@ -1,5 +1,5 @@
 # Kafka admin #
-=====================================
+==============
 
 Kafka admin is an open source product released under Apache License, Version 2.0 which provide us with:
 
@@ -29,10 +29,3 @@ Best Practices
 
 Because we love kafka, we introduced the best practices section that will provide you with enough information
 to set up your cluster with the best possible configuration. 
-
-
-=======
-kafka-admin
-===========
-
-Web Admin for kafka 0.7.2
